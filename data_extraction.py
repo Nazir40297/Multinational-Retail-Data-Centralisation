@@ -11,8 +11,8 @@ class DataExtractor:
         return user_data
     
     def list_number_of_stores(self, no_stores_end, header):
-        r = requests.get(no_stores_end, headers = header)
-        response = r.json()
+        request = requests.get(no_stores_end, headers = header)
+        response = request.json()
         num_stores = response['number_stores']
         return num_stores
     

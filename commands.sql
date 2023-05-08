@@ -1,3 +1,44 @@
+
+
+-- Altering data types of table 'orders_table'
+
+SELECT MAX(LENGTH(CAST(card_number as TEXT))) FROM orders_table = max_command_card_number
+SELECT MAX(LENGTH(store_code)) FROM orders_table = max_command_store_code
+SELECT MAX(LENGTH(product_code)) FROM orders_table = max_command_product_code
+ALTER TABLE orders_table
+ALTER COLUMN date_uuid TYPE UUID USING date_uuid::UUID,
+ALTER COLUMN user_uuid TYPE UUID USING user_uuid::UUID,
+ALTER COLUMN card_number TYPE VARCHAR({max_command_card_number}),
+ALTER COLUMN store_code TYPE VARCHAR({max_command_store_code}),
+ALTER COLUMN product_code TYPE VARCHAR({max_command_product_code})
+
+-- Altering data types of table 'dim_users'
+
+SELECT MAX(LENGTH(country_code)) FROM dim_users = max_command_country_code
+ALTER TABLE dim_users 
+ALTER COLUMN first_name TYPE VARCHAR(255),
+ALTER COLUMN last_name TYPE VARCHAR(255),
+ALTER COLUMN date_of_birth TYPE DATE,
+ALTER COLUMN country_code TYPE VARCHAR({max_command_country_code}),
+ALTER COLUMN user_uuid TYPE UUID USING user_uuid::UUID,
+ALTER COLUMN join_date TYPE DATE
+
+-- Altering data types of table 'dim_store_details'
+
+SELECT MAX(LENGTH(country_code)) FROM dim_store_details = max_command_country_code2
+SELECT MAX(LENGTH(store_code)) FROM dim_store_details = max_command_store_code2
+ALTER TABLE dim_store_details
+ALTER COLUMN longitude TYPE FLOAT,
+ALTER COLUMN locality TYPE VARCHAR(255),
+ALTER COLUMN store_code TYPE VARCHAR({max_command_store_code2}),
+ALTER COLUMN staff_numbers TYPE SMALLINT,
+ALTER COLUMN opening_date TYPE DATE,
+ALTER COLUMN store_type TYPE VARCHAR(255), DROP NOT NULL,
+ALTER COLUMN latitude TYPE FLOAT,
+ALTER COLUMN country_code TYPE VARCHAR({max_command_country_code2}),
+ALTER COLUMN continent TYPE VARCHAR(255)
+
+
 -- How many stores does the business have and in which countries?
 
 SELECT COUNT(DISTINCT store_code) AS num_stores, country_code

@@ -22,15 +22,9 @@ class DatabaseConnector:
         table_names = inspector.get_table_names()
         return table_names
     
-    def upload_to_db(self, df, upload_table):
-        DATABASE_TYPE = 'postgresql'
-        DBAPI = 'psycopg2'
-        HOST = 'localhost'
-        USER = 'postgres'
-        PASSWORD = 'nazir40297'
-        DATABASE = 'sales_data'
-        PORT = 5432
-        engine2 = create_engine(f'{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}')
+    def upload_to_db(self, file, df, upload_table):
+        db = self.read_db_creds(file)
+        engine2 = create_engine(url = f"{db['DATABASE_TYPE']}+{db['DBAPI']}://{db['USER']}:{db['PASSWORD']}@{db['HOST']}:{db['PORT']}/{db['DATABASE']}")
         engine2.connect()
         df.to_sql(upload_table, engine2)
 
